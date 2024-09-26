@@ -6,7 +6,7 @@ import java.sql.Connection
 import java.sql.DriverManager
 
 private val logger = logging()
-class DatabaseConnection {
+object DatabaseConnection {
     var connection: Connection? = null
     private set
 
@@ -37,7 +37,7 @@ class DatabaseConnection {
     }
 
 
-    fun <T> useConnection(block: (DatabaseConnection) -> T) {
+    fun <T> use(block: (DatabaseConnection) -> T) {
         try {
             initConexion()
             block(this)

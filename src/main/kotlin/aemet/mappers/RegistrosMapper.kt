@@ -7,7 +7,7 @@ import java.util.*
 
 fun RegistroDto.toRegistro(): Registro{
     return Registro(
-        id = UUID.randomUUID(),
+        id = UUID.fromString(this.id.toString()),
         localidad = this.localidad,
         provincia = this.provincia,
         tempMax = this.tempMax.toDouble(),

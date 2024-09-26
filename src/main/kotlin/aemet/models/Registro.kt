@@ -4,7 +4,7 @@ import java.time.LocalTime
 import java.util.*
 
 data class Registro(
-    val id: UUID = UUID.randomUUID(),
+    val id: UUID,
     val localidad: String,
     val provincia: String,
     val tempMax: Double,
