@@ -11,29 +11,34 @@ class RegistrosRepositoryImpl(
 ): RegistrosRepository {
     override fun getRegistros(): List<Registro> {
         logger.debug { "Obteniendo todos los registros de la base de datos" }
-         try {
-            val sql = "SELECT * FROM registros_entity"
-            val registros = mutableListOf<Registro>()
-            DatabaseConnection.use { db ->
-                val result = db.connection?.prepareStatement(sql)!!.executeQuery()
-                while (result.next()) {
-                    val registro = RegistroDto(
-                        UUID.fromString(result.getString("id")),
-                        result.getString("localidad"),
-                        result.getString("provincia"),
-                        result.getString("tempMax"),
-                        result.getString("horaTempMax"),
-                        result.getString("tempMin"),
-                        result.getString("horaTempMin"),
-                        result.getString("precipitacion")
-                    ).toRegistro()
-                    registros.add(registro)
+
+        val sql = "SELECT * FROM registros_entity"
+        val registros = mutableListOf<Registro>()
+
+        return try {
+            DatabaseConnection.use { connection ->
+                connection.prepareStatement(sql).use { preparedStatement ->
+                    preparedStatement.executeQuery().use { resultSet ->
+                        while (resultSet.next()) {
+                            val registro = RegistroDto(
+                                UUID.fromString(resultSet.getString("id")),
+                                resultSet.getString("localidad"),
+                                resultSet.getString("provincia"),
+                                resultSet.getString("tempMax"),
+                                resultSet.getString("horaTempMax"),
+                                resultSet.getString("tempMin"),
+                                resultSet.getString("horaTempMin"),
+                                resultSet.getString("precipitacion")
+                            ).toRegistro()
+                            registros.add(registro)
+                        }
+                    }
                 }
             }
-            return registros
-        }catch (e: Exception){
-            logger.error { "Error al obtener los registros de la base de datos" }
-             return emptyList()
+            registros
+        } catch (e: Exception) {
+            logger.error { "Error al obtener los registros de la base de datos: ${e.message}" }
+            emptyList()
         }
     }
 
@@ -41,9 +46,9 @@ class RegistrosRepositoryImpl(
         logger.debug { "Obteniendo el registro con id $id de la base de datos" }
         try {
             var registro: Registro? = null
-            DatabaseConnection.use { db ->
+            DatabaseConnection.use { connection ->
                 val sql = "SELECT * FROM registros_entity WHERE id = ?"
-                val statement = db.connection?.prepareStatement(sql)!!
+                val statement = connection.prepareStatement(sql)!!
                 statement.setString(1, id.toString())
                 val result = statement.executeQuery()
                 if (result.next()) {
@@ -71,8 +76,8 @@ class RegistrosRepositoryImpl(
          return try {
             val sql = "SELECT * FROM registros_entity WHERE localidad = ?"
             val registros = mutableListOf<Registro>()
-            DatabaseConnection.use { db ->
-                val statement = db.connection?.prepareStatement(sql)!!
+            DatabaseConnection.use { connection ->
+                val statement = connection.prepareStatement(sql)!!
                 statement.setString(1, localidad)
                 val result = statement.executeQuery()
                 while (result.next()) {
@@ -101,8 +106,8 @@ class RegistrosRepositoryImpl(
         return try{
             val sql = "SELECT * FROM registros_entity WHERE provincia =?"
             val registros = mutableListOf<Registro>()
-            DatabaseConnection.use { db ->
-                val statement = db.connection?.prepareStatement(sql)!!
+            DatabaseConnection.use { connection ->
+                val statement = connection.prepareStatement(sql)!!
                 statement.setString(1, provincia)
                 val result = statement.executeQuery()
                 while (result.next()) {
@@ -130,8 +135,8 @@ class RegistrosRepositoryImpl(
         logger.debug { "Añadiendo un nuevo registro a la base de datos" }
          try {
             val sql = "INSERT INTO registros_entity (id, localidad, provincia, tempMax, horaTempMax, tempMin, horaTempMin, precipitacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-            DatabaseConnection.use { db ->
-                val statement = db.connection?.prepareStatement(sql)!!
+            DatabaseConnection.use { connection ->
+                val statement = connection.prepareStatement(sql)!!
                 statement.setString(1, registro.id.toString())
                 statement.setString(2, registro.localidad)
                 statement.setString(3, registro.provincia)
@@ -152,8 +157,8 @@ class RegistrosRepositoryImpl(
         logger.debug { "Actualizando el registro con id $id en la base de datos" }
         return try {
             val sql = "UPDATE registros_entity SET localidad = ?, provincia = ?, tempMax = ?, horaTempMax = ?, tempMin = ?, horaTempMin = ?, precipitacion = ? WHERE id = ?"
-            DatabaseConnection.use { db ->
-                val statement = db.connection?.prepareStatement(sql)!!
+            DatabaseConnection.use { connection ->
+                val statement = connection?.prepareStatement(sql)!!
                 statement.setString(1, registro.localidad)
                 statement.setString(2, registro.provincia)
                 statement.setString(3, registro.tempMax.toString())
@@ -183,9 +188,9 @@ class RegistrosRepositoryImpl(
         logger.debug { "Eliminando el registro con id $id de la base de datos" }
         return try {
             var registro: Registro? = null
-            DatabaseConnection.use { db ->
+            DatabaseConnection.use { connection ->
                 val sql = "DELETE FROM registros_entity WHERE id = ?"
-                val statement = db.connection?.prepareStatement(sql)!!
+                val statement = connection?.prepareStatement(sql)!!
                 statement.setString(1, id.toString())
                 val rowsAffected = statement.executeUpdate()
 
