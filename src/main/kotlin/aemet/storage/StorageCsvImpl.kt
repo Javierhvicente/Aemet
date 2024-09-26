@@ -7,6 +7,7 @@ import org.example.aemet.dto.RegistroDto
 import org.example.aemet.errors.StorageError
 import org.example.aemet.mappers.toRegistro
 import org.example.aemet.models.Registro
+import org.example.aemet.validators.validateCsvEntries
 import org.lighthousegames.logging.logging
 import java.io.File
 private val logger = logging()
@@ -16,6 +17,9 @@ class StorageCsvImpl: Read<Registro, StorageError> {
             val lines = file.readLines()
             Ok(lines.map {
                 val data = it.split(',')
+                if(validateCsvEntries(data).isErr){
+                    return Err(StorageError.FileReadingError("Invalid registro format from file $file"))
+                }
                 RegistroDto(
                     provincia = data[0],
                     localidad = data[1],
