@@ -11,6 +11,6 @@ data class Registro(
     val horaTempMax: LocalTime,
     val tempMin: Double,
     val horaTempMin: LocalTime,
-    val precipitacion: Int,
+    val precipitacion: Double,
 ) {
 }

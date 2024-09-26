@@ -17,6 +17,10 @@ object Config {
         readProperty("databaseInmemory")?.toBoolean() ?: true
     }
 
+    val databasInitTables: Boolean by lazy {
+        readProperty("database.init.Tables")?.toBoolean() ?: true
+    }
+
     val cacheSize: Int by lazy {
         readProperty("cacheSize")?.toInt() ?: 5
     }

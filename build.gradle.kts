@@ -12,10 +12,12 @@ repositories {
 dependencies {
     implementation("com.michael-bull.kotlin-result:kotlin-result:2.0.0")
 
+    implementation("org.xerial:sqlite-jdbc:3.45.2.0")
+
     implementation("org.lighthousegames:logging:1.3.0")
     implementation("ch.qos.logback:logback-classic:1.4.14")
 
-    // Serialización JSON
+    // Serializaciï¿½n JSON
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")

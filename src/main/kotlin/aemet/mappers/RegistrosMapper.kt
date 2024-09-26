@@ -14,7 +14,7 @@ fun RegistroDto.toRegistro(): Registro{
         horaTempMax = LocalTime.parse(this.horaTempMax) ,
         tempMin = this.tempMin.toDouble(),
         horaTempMin = LocalTime.parse(this.horaTempMin),
-        precipitacion = this.precipitacion.toInt()
+        precipitacion = this.precipitacion.toDouble()
     )
 }
 
