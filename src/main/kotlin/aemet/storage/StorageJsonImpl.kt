@@ -12,7 +12,7 @@ import org.example.aemet.models.Registro
 import org.lighthousegames.logging.logging
 import java.io.File
 private val logger = logging()
-class StorageJson: Write<Registro, StorageError> {
+class StorageJsonImpl: Write<Registro, StorageError> {
     override fun writeFile(file: File, lista: List<Registro>): Result<Unit, StorageError> {
         logger.debug { "Storing registros into $file" }
         return try {

@@ -17,6 +17,8 @@ dependencies {
     //Logger
     implementation("org.lighthousegames:logging:1.3.0")
     implementation("ch.qos.logback:logback-classic:1.4.14")
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
     // HIKARI JBDC
     implementation("com.zaxxer:HikariCP:6.0.0")
     // Serializaci�n JSON

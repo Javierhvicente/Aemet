@@ -9,7 +9,7 @@ import java.util.*
 private val logger = logging()
 class RegistrosRepositoryImpl(
 ): RegistrosRepository {
-    override fun getRegistros(): List<Registro> {
+    override fun getAllRegistros(): List<Registro> {
         logger.debug { "Obteniendo todos los registros de la base de datos" }
 
         val sql = "SELECT * FROM registros_entity"
@@ -71,7 +71,7 @@ class RegistrosRepositoryImpl(
         }
     }
 
-    override fun getRegistrosByLocalidad(localidad: String): List<Registro> {
+    override fun getRegistrosByLocalidad(localidad: String): List<Registro?> {
         logger.debug { "Obteniendo los registros de la localidad $localidad de la base de datos" }
          return try {
             val sql = "SELECT * FROM registros_entity WHERE localidad = ?"
@@ -101,7 +101,7 @@ class RegistrosRepositoryImpl(
         }
     }
 
-    override fun getRegistrosByProvincia(provincia: String): List<Registro> {
+    override fun getRegistrosByProvincia(provincia: String): List<Registro?> {
         logger.debug { "Obteniendo los registros de la provincia $provincia de la base de datos" }
         return try{
             val sql = "SELECT * FROM registros_entity WHERE provincia =?"
