@@ -8,4 +8,5 @@ sealed class ServiceError(message: String) {
      class RegistroUpdateError(message: String): ServiceError(message)
      class RegistroDeletionError(message: String): ServiceError(message)
      class FileReadingReadError(message: String): ServiceError(message)
+     class FileWritingError(message: String): ServiceError(message)
 }
