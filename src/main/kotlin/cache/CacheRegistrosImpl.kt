@@ -1,8 +1,8 @@
-package org.example.aemet.cache
+package org.example.cache
 
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
-import org.example.aemet.cache.error.CacheError
+import org.example.cache.error.CacheError
 import org.example.aemet.models.Registro
 import com.github.michaelbull.result.Result
 import org.lighthousegames.logging.logging

@@ -1,6 +1,6 @@
-package org.example.aemet.cache
+package org.example.cache
 
-import org.example.aemet.cache.error.CacheError
+import org.example.cache.error.CacheError
 import com.github.michaelbull.result.Result
 
 interface Cache<K, T> {

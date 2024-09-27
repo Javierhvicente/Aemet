@@ -6,7 +6,7 @@ import com.github.michaelbull.result.mapBoth
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
-import org.example.aemet.cache.CacheRegistrosImpl
+import org.example.cache.CacheRegistrosImpl
 import org.example.aemet.errors.StorageError
 import org.example.aemet.repository.RegistrosRepositoryImpl
 import org.example.aemet.service.RegistrosServiceImpl

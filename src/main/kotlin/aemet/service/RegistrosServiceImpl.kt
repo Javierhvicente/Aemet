@@ -4,7 +4,7 @@ import com.github.michaelbull.result.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
-import org.example.aemet.cache.CacheRegistrosImpl
+import org.example.cache.CacheRegistrosImpl
 import org.example.aemet.errors.ServiceError
 import org.example.aemet.errors.StorageError
 import org.example.aemet.models.Registro
