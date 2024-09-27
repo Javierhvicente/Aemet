@@ -27,17 +27,19 @@ fun main(args: Array<String>) = runBlocking {
         storageCsv = StorageCsvImpl()
     )
 
-    val results = args.map { arg ->
+    val deferredResults = args.take(3).mapIndexed { index, filePath ->
         async {
-            service.readCsv(File(arg)).mapBoth(
-                success = { println("CSV leído correctamente para archivo: $arg") },
-                failure = {
-                    println("Error: No se ha podido leer el archivo CSV $arg")
+            val result = service.readCsv(File(filePath))
+            result.mapBoth(
+                success = { println("CSV ${index + 1} leído correctamente: $filePath") },
+                failure = { error ->
+                    println("Error al leer el archivo CSV ${index + 1}: $filePath")
                 }
             )
         }
     }
-    results.awaitAll()
+
+    deferredResults.awaitAll()
 
     val listaRegistros = service.getAllRegistros().value
     println("Registros: $listaRegistros")
