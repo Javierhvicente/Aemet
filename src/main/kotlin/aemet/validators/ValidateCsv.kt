@@ -4,16 +4,10 @@ import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import org.example.aemet.errors.ValidatorError
-import org.lighthousegames.logging.logging
-import sun.util.logging.resources.logging
-import java.io.File
-import java.time.LocalDate
-
-private val logger = org.lighthousegames.logging.logging()
 
 fun validateCsvEntries(item: List<String>): Result<List<String>, ValidatorError> {
 
-    val regexNombres = Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑ'-]+(\\s+[a-zA-ZáéíóúÁÉÍÓÚñÑ'-]+)*\$")
+    val regexNombres = Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑ'-?]+(\\s+[a-zA-ZáéíóúÁÉÍÓÚñÑ'-?]+)*\$\n")
     val regexHora = Regex("^(?:[01]\\d|2[0-3]):[0-5]\\d$")
 
     return when {

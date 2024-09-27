@@ -10,29 +10,29 @@ import org.example.aemet.models.Registro
 import org.example.aemet.validators.validateCsvEntries
 import org.lighthousegames.logging.logging
 import java.io.File
+import kotlin.math.log
+
 private val logger = logging()
 class StorageCsvImpl: Read<Registro, StorageError> {
     override fun readFile(file: File): Result<List<Registro>, StorageError> {
-        return try {
-            val lines = file.readLines()
-            Ok(lines.map {
-                val data = it.split(',')
-                if(validateCsvEntries(data).isErr){
-                    return Err(StorageError.FileReadingError("Invalid registro format from file $file"))
-                }
+        logger.debug { "Reading file $file" }
+        val lista = file.readLines().map {
+            val data = it.split(";")
+            if(validateCsvEntries(data).isOk){
                 RegistroDto(
-                    provincia = data[0],
-                    localidad = data[1],
+                    localidad = data[0],
+                    provincia = data[1],
                     tempMax = data[2],
                     horaTempMax = data[3],
                     tempMin = data[4],
                     horaTempMin = data[5],
                     precipitacion = data[6]
                 ).toRegistro()
-            })
-        }catch (e: Exception) {
-            logger.error{"Error reading file $file"}
-           return Err(StorageError.FileReadingError("Error loading registros from file $file"))
+            }else{
+                logger.error { "Error al leer el fichero $file" }
+                return Err(StorageError.FileReadingError("Error al leer el fichero  $file"))
+            }
         }
+        return Ok(lista)
     }
 }

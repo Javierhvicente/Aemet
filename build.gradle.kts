@@ -24,7 +24,7 @@ dependencies {
     // Serializaci�n JSON
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    testImplementation("io.mockk:mockk:1.13.10")
     testImplementation(kotlin("test"))
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 }
