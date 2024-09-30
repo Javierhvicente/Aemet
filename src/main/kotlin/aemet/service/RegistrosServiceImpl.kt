@@ -92,43 +92,27 @@ class RegistrosServiceImpl(
             ?: Err(ServiceError.RegistroDeletionError("Registro no borrado con id: $id"))
     }
 
-    suspend override fun readCsv(file: File): Result<List<Registro>, ServiceError> {
+    override fun readCsv(file: File): Result<List<Registro>, ServiceError> {
         logger.debug { "Reading csv file $file" }
-        return withContext(Dispatchers.IO) {
-            val result = storageCsv.readFile(file)
-            result.mapBoth(
-                success = { registros ->
-                    registros.map { p ->
-                        async {
-                            repository.addRegistro(p)
-                            logger.debug { "Stored tenista: $p" }
-                        }
-                    }.forEach { it.await() }
-                    Ok(registros)
-                },
-                failure = {
-                    logger.error { "Error loading Registros from file: $file" }
-                    Err(ServiceError.FileReadingReadError("Error loading Registros from file: $file"))
+        return storageCsv.readFile(file).mapBoth(
+            success = {
+                it.forEach { p ->
+                    repository.addRegistro(p)
+                    logger.debug { "Stored registros: $p" }
                 }
-            )
-        }
+                Ok(it)
+            },
+            failure = {
+                logger.error { "Error loading registros from file: $file" }
+                Err(ServiceError.FileReadingReadError("Error loading registros from file: $file"))
+            }
+        )
     }
 
-    suspend override fun writeJson(file: File, registros: List<Registro>): Result<File, ServiceError> {
+     override fun writeJson(file: File, registros: List<Registro>): Result<Unit, StorageError> {
         logger.debug { "Writing json file $file" }
-        return withContext(Dispatchers.IO) {
-            val result = storageJson.writeFile(file, registros)
-            result.mapBoth(
-                success = {
-                    logger.debug { "Registros stored in file $file" }
-                    Ok(file)
-                },
-                failure = {
-                    logger.error { "Error writing Registros to file $file" }
-                    Err(ServiceError.FileWritingError("Error writing Registros to file $file"))
-                }
-            )
-        }
+         return storageJson.writeFile(file, registros)
+
     }
 
 

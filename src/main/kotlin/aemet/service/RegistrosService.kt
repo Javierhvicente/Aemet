@@ -15,7 +15,7 @@ interface RegistrosService {
     fun createRegistro(registro: Registro): Result<Registro, ServiceError>
     fun updateRegistro(id: UUID, registro: Registro): Result<Registro, ServiceError>
     fun deleteRegistroById(id: UUID): Result<Registro, ServiceError>
-    suspend fun readCsv(file: File): Result<List<Registro>, ServiceError>
-    suspend fun writeJson(file: File, registros: List<Registro>): Result<File, ServiceError>
+     fun readCsv(file: File): Result<List<Registro>, ServiceError>
+     fun writeJson(file: File, registros: List<Registro>): Result<Unit, StorageError>
 
 }

@@ -14,7 +14,7 @@ object Config {
     }
 
     val databaseInmemory: Boolean by lazy {
-        readProperty("databaseInmemory")?.toBoolean() ?: true
+        readProperty("databaseInmemory")?.toBoolean() ?: false
     }
 
     val databasInitTables: Boolean by lazy {

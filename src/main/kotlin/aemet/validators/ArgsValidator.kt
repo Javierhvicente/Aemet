@@ -17,7 +17,7 @@ fun validateArgsEntrada(path: String): Result<String, ValidatorError>{
         Err(ValidatorError.FileDoesNotExistError("El archivo $path no existe o no se puede leer"))
     }
     val archivo = File(path)
-    if (archivo.extension.equals("csv", ignoreCase = true)) {
+    if (!archivo.extension.equals("csv", ignoreCase = true)) {
         logger.error { "Error al leer el archivo $path. No tiene extensión.csv. Debe ser.csv. Verifique que el archivo tenga la extensión correcta."}
         Err(ValidatorError.InvalidExtension("El archivo $path no tiene extensión .csv"))
     }
